@@ -1,5 +1,5 @@
 import numpy
-import utils
+from cqcpy import utils
 
 class Hubbard1D(object):
     """One dimensional Hubbard model.
