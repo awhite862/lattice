@@ -119,10 +119,76 @@ class Hubbard2D(object):
         t = numpy.zeros((L,L))
         for i in range(L):
             nn = self.nn[i,:]
-            t[i,nn[0]] = -1.0
-            t[i,nn[1]] = -1.0
-            t[i,nn[2]] = -1.0
-            t[i,nn[3]] = -1.0
+            t[i,nn[0]] -= 1.0/4.0
+            t[i,nn[1]] -= 1.0/4.0
+            t[i,nn[2]] -= 1.0/4.0
+            t[i,nn[3]] -= 1.0/4.0
+        return t
+
+    def get_tmat(self):
+        """ Return T-matrix in the spin orbital basis."""
+        t = self.get_tmatS()
+        return utils.block_diag(t,t)
+
+    def get_umatS(self):
+        """ Return U-matrix (not antisymmetrized) in the spatial orbital basis."""
+        L = self.L
+        umat = numpy.zeros((L,L,L,L))
+        for i in range(L):
+            umat[i,i,i,i] = 4.0*self.u
+        return umat
+
+    def get_umat(self):
+        """ Return U-matrix in the spin orbital basis."""
+        L = self.L
+        umat = numpy.zeros((2*L,2*L,2*L,2*L))
+        for i in range(N):
+            umat[i,L+i,i,L+i] = 4.0*self.u
+            umat[L+i,i,L+i,i] = 4.0*self.u
+            umat[i,i,i,i] = 4.0*self.u
+            umat[L+i,L+i,L+i,L+i] = 4.0*self.u
+        return umat
+
+class Hubbard3D(object):
+    """Three dimensional Hubbard model.
+
+    Attributes:
+        L (int): Total number of sites.
+        t (float): Hubbard t (hopping) parameter.
+        U (float): Hubbard U (on-site repulsion) parameter.
+        u (float): reduced hubbard U-parameter (u = U/4t).
+    """
+
+    def __init__(self,L,t,U,nn):
+        """Initialize 2D Hubbard model.
+
+        Args:
+            L (int): Number of sites.
+            t (float): Hubbard t (hopping) parameter.
+            U (float): Hubbard U (on-site repulsion) parameter.
+        """
+        self.L = L
+        self.t = t
+        self.U = U
+        self.u = U/(4.0*t)
+        self.nn = nn
+
+    def get_dim(self):
+        """Return spin-orbital dimension."""
+        return 2*self.L
+
+    def get_tmatS(self):
+        """ Return T-matrix in the spatial orbital basis."""
+        L = self.L
+        t = numpy.zeros((L,L))
+        for i in range(L):
+            nn = self.nn[i,:]
+            t[i,nn[0]] -= 1.0/6.0
+            t[i,nn[1]] -= 1.0/6.0
+            t[i,nn[2]] -= 1.0/6.0
+            t[i,nn[3]] -= 1.0/6.0
+            t[i,nn[4]] -= 1.0/6.0
+            t[i,nn[5]] -= 1.0/6.0
         return t
 
     def get_tmat(self):
