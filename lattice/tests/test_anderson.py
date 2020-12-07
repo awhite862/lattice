@@ -8,7 +8,7 @@ class AndersonTest(unittest.TestCase):
     def test_vs_hubbard_simple(self):
         # L = 5, U = 0, half-filling
         hub = Hubbard1D(5,1.0,0.0,boundary='c')
-        aim = Anderson(2,2,1.0,1.0,0.0,1.0)
+        aim = Anderson(2,2,1.0,1.0,0.0,1.0,0.0)
         #print(aim.get_vmatS())
         #print(aim.get_tmatS())
 
@@ -25,7 +25,7 @@ class AndersonTest(unittest.TestCase):
     def test_vs_hubbard(self):
         # L = 5, U = 0, half-filling
         hub = Hubbard1D(5,1.0,0.0,boundary='c')
-        aim = Anderson(2,2,1.0,2.0,0.0,1.0)
+        aim = Anderson(2,2,1.0,2.0,0.0,1.0,1.0)
         #print(aim.get_vmatS())
         #print(aim.get_tmatS())
 

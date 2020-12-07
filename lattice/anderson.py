@@ -10,11 +10,13 @@ class Anderson(object):
         t (float): hopping parameter
         td (float): coupling between dot and leads
         U (float): dot repulsion
-        V (float): gate potential
+        V (float): potential
+        Vg (float): gate voltage
         u (float): normalized dot repulsion (U/4t)
-        v (float): normalized gate potential (V/t)
+        v (float): normalized potential (V/t)
+        vg (float): normalized gate voltage (Vg/t)
     """
-    def __init__(self,ll,lr,t,td,U,V):
+    def __init__(self,ll,lr,t,td,U,V,Vg):
         """Initialize Anderson impurity model.
 
         Args:
@@ -23,7 +25,8 @@ class Anderson(object):
             t (float): hopping parameter
             td (float): hopping parameter to leads
             U (float): dot repulsion
-            V (float): gate potential
+            V (float): potential
+            Vg (float): gate voltage
         """
         self.ll = ll
         self.lr = lr
@@ -32,7 +35,9 @@ class Anderson(object):
         self.tdr = td/t
         self.U = U
         self.V = V
+        self.Vg = Vg
         self.v = V/t
+        self.vg = Vg/t
         self.u = U/(4.0*t)
 
     def get_dim(self):
@@ -61,6 +66,7 @@ class Anderson(object):
         v = numpy.zeros((N,N))
         for i in range(self.ll): v[i,i] = self.v/2
         off = self.ll + 1
+        v[self.ll, self.ll] = self.vg
         for i in range(self.lr): v[off + i,off + i] = -self.v/2
         return v
 
