@@ -10,7 +10,6 @@ class Hubbard1D(object):
         U (float): Hubbard U (on-site repulsion) parameter.
         u (float): reduced hubbard U-parameter (u = U/4t).
     """
-
     def __init__(self,L,t,U,boundary='p'):
         """Initialize 1D Hubbard model.
 

@@ -1,9 +1,13 @@
 import unittest
+import test_anderson
 import test_test
 import test_fci_simple
 
 def run_suite():
     suite = unittest.TestSuite()
+
+    suite.addTest(test_anderson.AndersonTest("test_vs_hubbard_simple"))
+    suite.addTest(test_anderson.AndersonTest("test_vs_hubbard"))
 
     suite.addTest(test_test.TestTest("test_framework"))
 
