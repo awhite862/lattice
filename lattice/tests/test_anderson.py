@@ -3,14 +3,13 @@ import unittest
 from lattice.hubbard import Hubbard1D
 from lattice.anderson import Anderson
 
+
 class AndersonTest(unittest.TestCase):
 
     def test_vs_hubbard_simple(self):
         # L = 5, U = 0, half-filling
-        hub = Hubbard1D(5,1.0,0.0,boundary='c')
-        aim = Anderson(2,2,1.0,1.0,0.0,1.0,0.0)
-        #print(aim.get_vmatS())
-        #print(aim.get_tmatS())
+        hub = Hubbard1D(5, 1.0, 0.0, boundary='c')
+        aim = Anderson(2, 2, 1.0, 1.0, 0.0, 1.0, 0.0)
 
         tsref = hub.get_tmatS()
         tsout = aim.get_tmatS()
@@ -24,10 +23,8 @@ class AndersonTest(unittest.TestCase):
 
     def test_vs_hubbard(self):
         # L = 5, U = 0, half-filling
-        hub = Hubbard1D(5,1.0,0.0,boundary='c')
-        aim = Anderson(2,2,1.0,2.0,0.0,1.0,1.0)
-        #print(aim.get_vmatS())
-        #print(aim.get_tmatS())
+        hub = Hubbard1D(5, 1.0, 0.0, boundary='c')
+        aim = Anderson(2, 2, 1.0, 2.0, 0.0, 1.0, 1.0)
 
         tsref = hub.get_tmatS()
         tsout = aim.get_tmatS()
@@ -44,12 +41,13 @@ class AndersonTest(unittest.TestCase):
         tref[3,2] = -2
         tref[1,2] = -2
         tref[2,1] = -2
-        tref[2+5,3+5] = -2
-        tref[3+5,2+5] = -2
-        tref[1+5,2+5] = -2
-        tref[2+5,1+5] = -2
+        tref[2 + 5,3 + 5] = -2
+        tref[3 + 5,2 + 5] = -2
+        tref[1 + 5,2 + 5] = -2
+        tref[2 + 5,1 + 5] = -2
 
         self.assertTrue(numpy.linalg.norm(tref - tout) < 1e-14)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,6 +3,7 @@ import test_anderson
 import test_test
 import test_fci_simple
 
+
 def run_suite():
     suite = unittest.TestSuite()
 
@@ -14,6 +15,7 @@ def run_suite():
     suite.addTest(test_fci_simple.TestFCISimple("test_1d_hubbard_closed"))
 
     return suite
+
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()

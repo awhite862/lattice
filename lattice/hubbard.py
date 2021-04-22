@@ -1,6 +1,7 @@
 import numpy
 from cqcpy import utils
 
+
 class Hubbard1D(object):
     """One dimensional Hubbard model.
 
@@ -10,7 +11,7 @@ class Hubbard1D(object):
         U (float): Hubbard U (on-site repulsion) parameter.
         u (float): reduced hubbard U-parameter (u = U/4t).
     """
-    def __init__(self,L,t,U,boundary='p'):
+    def __init__(self, L, t, U, boundary='p'):
         """Initialize 1D Hubbard model.
 
         Args:
@@ -34,16 +35,17 @@ class Hubbard1D(object):
             l = L - 1 if i == 0 else i - 1
             r = 0 if i == (L - 1) else i + 1
         elif self.bc == 'c':
-            l = i+1 if i == 0 else i - 1
-            r = i-1 if i == (L - 1) else i + 1
+            l = i + 1 if i == 0 else i - 1
+            r = i - 1 if i == (L - 1) else i + 1
         else:
             raise Exception("Unrecognized boundary conditions")
         return (l,r)
 
-    def get_tmatS(self,phase=None):
+    def get_tmatS(self, phase=None):
         """ Return T-matrix in the spatial orbital basis."""
         L = self.L
-        t = numpy.zeros((L,L)) if phase is None else numpy.zeros((L,L),dtype=complex)
+        dtype = float if phase is None else complex
+        t = numpy.zeros((L,L), dtype=dtype)
         for i in range(L):
             nn = self._get_nn(i)
             if phase is None:
@@ -60,13 +62,14 @@ class Hubbard1D(object):
                     t[i,nn[1]] = -1.0*numpy.exp(-1.j*phase)
         return t
 
-    def get_tmat(self,phase=None):
+    def get_tmat(self, phase=None):
         """ Return T-matrix in the spin orbital basis."""
         t = self.get_tmatS(phase=phase)
-        return utils.block_diag(t,t)
+        return utils.block_diag(t, t)
 
     def get_umatS(self):
-        """ Return U-matrix (not antisymmetrized) in the spatial orbital basis."""
+        """ Return U-matrix (not antisymmetrized) in the
+        spatial-orbital basis."""
         L = self.L
         umat = numpy.zeros((L,L,L,L))
         for i in range(L):
@@ -74,15 +77,17 @@ class Hubbard1D(object):
         return umat
 
     def get_umat(self):
-        """ Return U-matrix (not antisymmetrized) in the spin orbital basis."""
+        """ Return U-matrix (not antisymmetrized) in the
+        spin-orbital basis."""
         L = self.L
         umat = numpy.zeros((2*L,2*L,2*L,2*L))
         for i in range(L):
-            umat[i,L+i,i,L+i] = 4.0*self.u
-            umat[L+i,i,L+i,i] = 4.0*self.u
+            umat[i,L + i,i,L + i] = 4.0*self.u
+            umat[L + i,i,L + i,i] = 4.0*self.u
             umat[i,i,i,i] = 4.0*self.u
-            umat[L+i,L+i,L+i,L+i] = 4.0*self.u
+            umat[L + i,L + i,L + i,L + i] = 4.0*self.u
         return umat
+
 
 class Hubbard2D(object):
     """Two dimensional Hubbard model plaquette.
@@ -94,7 +99,7 @@ class Hubbard2D(object):
         u (float): reduced hubbard U-parameter (u = U/4t).
     """
 
-    def __init__(self,L,t,U,nn):
+    def __init__(self, L, t, U, nn):
         """Initialize 2D Hubbard model.
 
         Args:
@@ -127,10 +132,11 @@ class Hubbard2D(object):
     def get_tmat(self):
         """ Return T-matrix in the spin orbital basis."""
         t = self.get_tmatS()
-        return utils.block_diag(t,t)
+        return utils.block_diag(t, t)
 
     def get_umatS(self):
-        """ Return U-matrix (not antisymmetrized) in the spatial orbital basis."""
+        """ Return U-matrix (not antisymmetrized) in the
+        spatial-orbital basis."""
         L = self.L
         umat = numpy.zeros((L,L,L,L))
         for i in range(L):
@@ -141,12 +147,13 @@ class Hubbard2D(object):
         """ Return U-matrix in the spin orbital basis."""
         L = self.L
         umat = numpy.zeros((2*L,2*L,2*L,2*L))
-        for i in range(N):
-            umat[i,L+i,i,L+i] = 4.0*self.u
-            umat[L+i,i,L+i,i] = 4.0*self.u
+        for i in range(L):
+            umat[i, L + i,i,L + i] = 4.0*self.u
+            umat[L + i,i,L + i,i] = 4.0*self.u
             umat[i,i,i,i] = 4.0*self.u
-            umat[L+i,L+i,L+i,L+i] = 4.0*self.u
+            umat[L + i,L + i,L + i,L + i] = 4.0*self.u
         return umat
+
 
 class Hubbard3D(object):
     """Three dimensional Hubbard model.
@@ -158,7 +165,7 @@ class Hubbard3D(object):
         u (float): reduced hubbard U-parameter (u = U/4t).
     """
 
-    def __init__(self,L,t,U,nn):
+    def __init__(self, L, t, U, nn):
         """Initialize 2D Hubbard model.
 
         Args:
@@ -193,10 +200,11 @@ class Hubbard3D(object):
     def get_tmat(self):
         """ Return T-matrix in the spin orbital basis."""
         t = self.get_tmatS()
-        return utils.block_diag(t,t)
+        return utils.block_diag(t, t)
 
     def get_umatS(self):
-        """ Return U-matrix (not antisymmetrized) in the spatial orbital basis."""
+        """ Return U-matrix (not antisymmetrized) in the
+        spatial-orbital basis."""
         L = self.L
         umat = numpy.zeros((L,L,L,L))
         for i in range(L):
@@ -207,9 +215,9 @@ class Hubbard3D(object):
         """ Return U-matrix in the spin orbital basis."""
         L = self.L
         umat = numpy.zeros((2*L,2*L,2*L,2*L))
-        for i in range(N):
-            umat[i,L+i,i,L+i] = 4.0*self.u
-            umat[L+i,i,L+i,i] = 4.0*self.u
+        for i in range(L):
+            umat[i,L + i,i,L + i] = 4.0*self.u
+            umat[L + i,i,L + i,i] = 4.0*self.u
             umat[i,i,i,i] = 4.0*self.u
-            umat[L+i,L+i,L+i,L+i] = 4.0*self.u
+            umat[L + i,L + i,L + i,L + i] = 4.0*self.u
         return umat
