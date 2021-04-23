@@ -1,5 +1,6 @@
 import numpy
 import itertools
+import logging
 from math import factorial
 
 
@@ -21,8 +22,9 @@ class FCISimple(object):
         self.nelec = nelec
         self.norb = model.get_dim()
         self.m_s = m_s
-        if self.norb > 16:
-            raise Exception("This code cannot handle more than 8 sites")
+        logging.warning("FCISimple only works in for certain cases, beware!")
+        if self.norb > 8:
+            raise Exception("This code cannot handle more than 4 sites")
 
         seed = [i for i in range(self.norb)]
         combs = list(itertools.combinations(seed, nelec))

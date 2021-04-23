@@ -1,4 +1,6 @@
+import sys
 import unittest
+import logging
 import test_anderson
 import test_test
 import test_fci_simple
@@ -18,5 +20,9 @@ def run_suite():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(
+        format='%(levelname)s:%(message)s',
+        level=logging.ERROR,
+        stream=sys.stdout)
     runner = unittest.TextTestRunner()
     runner.run(run_suite())
