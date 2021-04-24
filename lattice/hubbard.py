@@ -31,14 +31,12 @@ class Hubbard1D(object):
 
     def _get_nn(self,i):
         L = self.L
-        if self.bc == "p":
+        if self.bc == "p" or self.bc == "pbc":
             l = L - 1 if i == 0 else i - 1
             r = 0 if i == (L - 1) else i + 1
-        elif self.bc == 'c':
+        else:
             l = i + 1 if i == 0 else i - 1
             r = i - 1 if i == (L - 1) else i + 1
-        else:
-            raise Exception("Unrecognized boundary conditions")
         return (l,r)
 
     def get_tmatS(self, phase=None):

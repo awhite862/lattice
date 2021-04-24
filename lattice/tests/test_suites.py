@@ -14,7 +14,7 @@ def run_suite():
 
     suite.addTest(test_test.TestTest("test_framework"))
 
-    suite.addTest(test_fci_simple.TestFCISimple("test_1d_hubbard_closed"))
+    suite.addTest(test_fci_simple.TestFCISimple("test_1d_hubbard"))
 
     return suite
 
