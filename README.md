@@ -1,5 +1,5 @@
 # Lattice
-A python interface for some lattic models
+A python interface for some lattice models
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://mit-license.org)
 
@@ -10,7 +10,9 @@ A python interface for some lattic models
   - This use of library is not recommended for most applications
 
 ## Features
-
+  - Hubbard models
+  - Anderson model
+  - Simple full-CI code
 
 ## Tests
 The tests we do have can be run as follows:
