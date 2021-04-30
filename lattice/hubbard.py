@@ -120,11 +120,10 @@ class Hubbard2D(object):
         N = self.N
         t = numpy.zeros((N,N))
         for i in range(N):
-            nn = self.nn[i,:]
-            t[i,nn[0]] -= 1.0/4.0
-            t[i,nn[1]] -= 1.0/4.0
-            t[i,nn[2]] -= 1.0/4.0
-            t[i,nn[3]] -= 1.0/4.0
+            nn = self.nn[i]
+            for x in nn:
+                t[i,x] -= self.t/2.0
+                t[x,i] -= self.t/2.0
         return t
 
     def get_tmat(self):
@@ -186,13 +185,10 @@ class Hubbard3D(object):
         N = self.N
         t = numpy.zeros((N,N))
         for i in range(N):
-            nn = self.nn[i,:]
-            t[i,nn[0]] -= 1.0/6.0
-            t[i,nn[1]] -= 1.0/6.0
-            t[i,nn[2]] -= 1.0/6.0
-            t[i,nn[3]] -= 1.0/6.0
-            t[i,nn[4]] -= 1.0/6.0
-            t[i,nn[5]] -= 1.0/6.0
+            nn = self.nn[i]
+            for x in nn:
+                t[i,x] -= self.t/2
+                t[x,i] -= self.t/2
         return t
 
     def get_tmat(self):

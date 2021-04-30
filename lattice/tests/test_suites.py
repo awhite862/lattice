@@ -2,6 +2,7 @@ import sys
 import unittest
 import logging
 import test_anderson
+import test_hubbard
 import test_test
 import test_fci_simple
 
@@ -11,6 +12,10 @@ def run_suite():
 
     suite.addTest(test_anderson.AndersonTest("test_vs_hubbard_simple"))
     suite.addTest(test_anderson.AndersonTest("test_vs_hubbard"))
+
+    suite.addTest(test_hubbard.HubbardTest("testT1D"))
+    suite.addTest(test_hubbard.HubbardTest("testT2D"))
+    suite.addTest(test_hubbard.HubbardTest("testT3D"))
 
     suite.addTest(test_test.TestTest("test_framework"))
 
