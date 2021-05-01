@@ -1,6 +1,7 @@
 import numpy
 from cqcpy import utils
 
+
 class HubbardBase(object):
     """Generic Hubbard model."""
     def __init__(self, N, t, U, nn):
@@ -25,12 +26,12 @@ class HubbardBase(object):
     def get_tmatS(self):
         """ Return T-matrix in the spatial orbital basis."""
         N = self.N
-        t = numpy.zeros((N,N))
+        t = numpy.zeros((N, N))
         for i in range(N):
             nn = self.nn[i]
             for x in nn:
-                t[i,x] -= self.t/2.0
-                t[x,i] -= self.t/2.0
+                t[i, x] -= self.t/2.0
+                t[x, i] -= self.t/2.0
         return t
 
     def get_tmat(self):
@@ -42,9 +43,9 @@ class HubbardBase(object):
         """ Return U-matrix (not antisymmetrized) in the
         spatial-orbital basis."""
         N = self.N
-        umat = numpy.zeros((N,N,N,N))
+        umat = numpy.zeros((N, N, N, N))
         for i in range(N):
-            umat[i,i,i,i] = 4.0*self.u
+            umat[i, i, i, i] = 4.0*self.u
         return umat
 
     def get_umat(self):
@@ -68,7 +69,7 @@ class Hubbard1D(object):
         U (float): Hubbard U (on-site repulsion) parameter.
         u (float): reduced hubbard U-parameter (u = U/4t).
     """
-    def __init__(self, L, t, U, boundary='p'):
+    def __init__(self, L, t, U, boundary='p', lattice=None):
         """Initialize 1D Hubbard model.
 
         Args:
@@ -76,7 +77,19 @@ class Hubbard1D(object):
             t (float): Hubbard t (hopping) parameter.
             U (float): Hubbard U (on-site repulsion) parameter.
         """
-        self.bc = boundary
+        # lattice is specified by keyword
+        if isinstance(boundary, str):
+            if lattice is not None:
+                raise Exception("lattice and boundary both specified")
+            nn = []
+            for i in range(L):
+                nn.append(self._get_nn(i, L, boundary))
+        # lattice is specified explicitly
+        else:
+            pass
+            #HubbardBase.__init__(self, L, t, U, lattice)
+        #self.bc = boundary
+        self.nn = nn
         self.L = L
         self.t = t
         self.U = U
@@ -86,35 +99,39 @@ class Hubbard1D(object):
         """Return spin-orbital dimension."""
         return 2*self.L
 
-    def _get_nn(self,i):
-        L = self.L
-        if self.bc == "p" or self.bc == "pbc":
+    def _get_nn(self, i, L, boundary):
+        if boundary == "p" or boundary == "pbc":
             l = L - 1 if i == 0 else i - 1
             r = 0 if i == (L - 1) else i + 1
+            return (l, r)
         else:
-            l = i + 1 if i == 0 else i - 1
-            r = i - 1 if i == (L - 1) else i + 1
-        return (l,r)
+            if i == 0:
+                return (i + 1,)
+            elif i == (L - 1):
+                return(i - 1,)
+            else:
+                l = i - 1
+                r = i + 1
+                return (l, r)
 
     def get_tmatS(self, phase=None):
         """ Return T-matrix in the spatial orbital basis."""
         L = self.L
         dtype = float if phase is None else complex
-        t = numpy.zeros((L,L), dtype=dtype)
+        t = numpy.zeros((L, L), dtype=dtype)
         for i in range(L):
-            nn = self._get_nn(i)
-            if phase is None:
-                t[i,nn[0]] = -1.0
-                t[i,nn[1]] = -1.0
-            else:
-                if nn[0] > i:
-                    t[i,nn[0]] = -1.0*numpy.exp(1.j*phase)
+            nn = self.nn[i]
+            for x in nn:
+                if phase is None:
+                    t[i, x] -= self.t/2
+                    t[x, i] -= self.t/2
+                elif x > i:
+                    t[i, x] -= numpy.exp(1.j*phase)*self.t/2
+                    t[x, i] -= numpy.exp(-1.j*phase)*self.t/2
                 else:
-                    t[i,nn[0]] = -1.0*numpy.exp(-1.j*phase)
-                if nn[1] > i:
-                    t[i,nn[1]] = -1.0*numpy.exp(1.j*phase)
-                else:
-                    t[i,nn[1]] = -1.0*numpy.exp(-1.j*phase)
+                    assert(x < i)
+                    t[i, x] -= numpy.exp(-1.j*phase)*self.t/2
+                    t[x, i] -= numpy.exp(1.j*phase)*self.t/2
         return t
 
     def get_tmat(self, phase=None):
@@ -126,21 +143,21 @@ class Hubbard1D(object):
         """ Return U-matrix (not antisymmetrized) in the
         spatial-orbital basis."""
         L = self.L
-        umat = numpy.zeros((L,L,L,L))
+        umat = numpy.zeros((L, L, L, L))
         for i in range(L):
-            umat[i,i,i,i] = 4.0*self.u
+            umat[i, i, i, i] = 4.0*self.u
         return umat
 
     def get_umat(self):
         """ Return U-matrix (not antisymmetrized) in the
         spin-orbital basis."""
         L = self.L
-        umat = numpy.zeros((2*L,2*L,2*L,2*L))
+        umat = numpy.zeros((2*L, 2*L, 2*L, 2*L))
         for i in range(L):
-            umat[i,L + i,i,L + i] = 4.0*self.u
-            umat[L + i,i,L + i,i] = 4.0*self.u
-            umat[i,i,i,i] = 4.0*self.u
-            umat[L + i,L + i,L + i,L + i] = 4.0*self.u
+            umat[i, L + i, i, L + i] = 4.0*self.u
+            umat[L + i, i, L + i, i] = 4.0*self.u
+            umat[i, i, i, i] = 4.0*self.u
+            umat[L + i, L + i, L + i, L + i] = 4.0*self.u
         return umat
 
 
