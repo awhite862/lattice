@@ -26,7 +26,8 @@ class HubbardBase(object):
     def get_tmatS(self, phase=None):
         """ Return T-matrix in the spatial orbital basis."""
         N = self.N
-        t = numpy.zeros((N, N))
+        dtype = float if phase is None else complex
+        t = numpy.zeros((N, N), dtype=dtype)
         for i in range(N):
             nn = self.nn[i]
             for x in nn:
@@ -68,7 +69,28 @@ class HubbardBase(object):
         return umat
 
 
-class Hubbard1D(object):
+def _get_nn_1d(L, boundary):
+    nn = []
+    for i in range(L):
+        #nn.append(self._get_nn(i, L, boundary))
+        if boundary == "p" or boundary == "pbc":
+            l = L - 1 if i == 0 else i - 1
+            r = 0 if i == (L - 1) else i + 1
+            x = (l, r)
+        else:
+            if i == 0:
+                x = (i + 1,)
+            elif i == (L - 1):
+                x = (i - 1,)
+            else:
+                l = i - 1
+                r = i + 1
+                x = (l, r)
+        nn.append(x)
+    return nn
+
+
+class Hubbard1D(HubbardBase):
     """One dimensional Hubbard model.
 
     Attributes:
@@ -89,84 +111,29 @@ class Hubbard1D(object):
         if isinstance(boundary, str):
             if lattice is not None:
                 raise Exception("lattice and boundary both specified")
-            nn = []
-            for i in range(L):
-                nn.append(self._get_nn(i, L, boundary))
+            #nn = []
+            #for i in range(L):
+            #    nn.append(self._get_nn(i, L, boundary))
+            nn = _get_nn_1d(L, boundary)
         # lattice is specified explicitly
         else:
             nn = lattice
-        #HubbardBase.__init__(self, L, t, U, lattice)
-        #self.bc = boundary
-        self.nn = nn
-        self.L = L
-        self.t = t
-        self.U = U
-        self.u = U/(4.0*t)
+        HubbardBase.__init__(self, L, t, U, nn)
 
-    def get_dim(self):
-        """Return spin-orbital dimension."""
-        return 2*self.L
-
-    def _get_nn(self, i, L, boundary):
-        if boundary == "p" or boundary == "pbc":
-            l = L - 1 if i == 0 else i - 1
-            r = 0 if i == (L - 1) else i + 1
-            return (l, r)
-        else:
-            if i == 0:
-                return (i + 1,)
-            elif i == (L - 1):
-                return(i - 1,)
-            else:
-                l = i - 1
-                r = i + 1
-                return (l, r)
-
-    def get_tmatS(self, phase=None):
-        """ Return T-matrix in the spatial orbital basis."""
-        L = self.L
-        dtype = float if phase is None else complex
-        t = numpy.zeros((L, L), dtype=dtype)
-        for i in range(L):
-            nn = self.nn[i]
-            for x in nn:
-                if phase is None:
-                    t[i, x] -= self.t/2
-                    t[x, i] -= self.t/2
-                elif x > i:
-                    t[i, x] -= numpy.exp(1.j*phase)*self.t/2
-                    t[x, i] -= numpy.exp(-1.j*phase)*self.t/2
-                else:
-                    assert(x < i)
-                    t[i, x] -= numpy.exp(-1.j*phase)*self.t/2
-                    t[x, i] -= numpy.exp(1.j*phase)*self.t/2
-        return t
-
-    def get_tmat(self, phase=None):
-        """ Return T-matrix in the spin orbital basis."""
-        t = self.get_tmatS(phase=phase)
-        return utils.block_diag(t, t)
-
-    def get_umatS(self):
-        """ Return U-matrix (not antisymmetrized) in the
-        spatial-orbital basis."""
-        L = self.L
-        umat = numpy.zeros((L, L, L, L))
-        for i in range(L):
-            umat[i, i, i, i] = 4.0*self.u
-        return umat
-
-    def get_umat(self):
-        """ Return U-matrix (not antisymmetrized) in the
-        spin-orbital basis."""
-        L = self.L
-        umat = numpy.zeros((2*L, 2*L, 2*L, 2*L))
-        for i in range(L):
-            umat[i, L + i, i, L + i] = 4.0*self.u
-            umat[L + i, i, L + i, i] = 4.0*self.u
-            umat[i, i, i, i] = 4.0*self.u
-            umat[L + i, L + i, L + i, L + i] = 4.0*self.u
-        return umat
+    #def _get_nn(self, i, L, boundary):
+    #    if boundary == "p" or boundary == "pbc":
+    #        l = L - 1 if i == 0 else i - 1
+    #        r = 0 if i == (L - 1) else i + 1
+    #        return (l, r)
+    #    else:
+    #        if i == 0:
+    #            return (i + 1,)
+    #        elif i == (L - 1):
+    #            return(i - 1,)
+    #        else:
+    #            l = i - 1
+    #            r = i + 1
+    #            return (l, r)
 
 
 class Hubbard2D(HubbardBase):

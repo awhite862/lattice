@@ -40,10 +40,10 @@ class FCISimple(object):
             self.k, norb = self.basis.shape
 
     def _get_m_s(self, state):
-        L = self.model.L
+        N = self.model.N
         m_s = 0
         for x in state:
-            d = 1 if x < L else -1
+            d = 1 if x < N else -1
             m_s = m_s + d
         return m_s
 
