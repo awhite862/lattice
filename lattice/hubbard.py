@@ -23,20 +23,28 @@ class HubbardBase(object):
         """Return spin-orbital dimension."""
         return 2*self.N
 
-    def get_tmatS(self):
+    def get_tmatS(self, phase=None):
         """ Return T-matrix in the spatial orbital basis."""
         N = self.N
         t = numpy.zeros((N, N))
         for i in range(N):
             nn = self.nn[i]
             for x in nn:
-                t[i, x] -= self.t/2.0
-                t[x, i] -= self.t/2.0
+                if phase is None:
+                    t[i, x] -= self.t/2
+                    t[x, i] -= self.t/2
+                elif x > i:
+                    t[i, x] -= numpy.exp(1.j*phase)*self.t/2
+                    t[x, i] -= numpy.exp(-1.j*phase)*self.t/2
+                else:
+                    assert(x < i)
+                    t[i, x] -= numpy.exp(-1.j*phase)*self.t/2
+                    t[x, i] -= numpy.exp(1.j*phase)*self.t/2
         return t
 
-    def get_tmat(self):
+    def get_tmat(self, phase=None):
         """ Return T-matrix in the spin orbital basis."""
-        t = self.get_tmatS()
+        t = self.get_tmatS(phase=phase)
         return utils.block_diag(t, t)
 
     def get_umatS(self):
@@ -86,8 +94,8 @@ class Hubbard1D(object):
                 nn.append(self._get_nn(i, L, boundary))
         # lattice is specified explicitly
         else:
-            pass
-            #HubbardBase.__init__(self, L, t, U, lattice)
+            nn = lattice
+        #HubbardBase.__init__(self, L, t, U, lattice)
         #self.bc = boundary
         self.nn = nn
         self.L = L
