@@ -16,9 +16,9 @@ class HubbardTest(unittest.TestCase):
 
         # 2 sites, periodic boundary
         hub = Hubbard1D(2, 1.0, 0.0, boundary='p')
-        tref = numpy.zeros((2,2))
-        tref[0,1] = -2
-        tref[1,0] = -2
+        tref = numpy.zeros((2, 2))
+        tref[0, 1] = -2
+        tref[1, 0] = -2
         tout = hub.get_tmatS()
         diff = numpy.linalg.norm(tout - tref)
         self.assertTrue(diff < 1e-14)

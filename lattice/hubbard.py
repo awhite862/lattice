@@ -72,7 +72,6 @@ class HubbardBase(object):
 def _get_nn_1d(L, boundary):
     nn = []
     for i in range(L):
-        #nn.append(self._get_nn(i, L, boundary))
         if boundary == "p" or boundary == "pbc":
             l = L - 1 if i == 0 else i - 1
             r = 0 if i == (L - 1) else i + 1
@@ -111,29 +110,11 @@ class Hubbard1D(HubbardBase):
         if isinstance(boundary, str):
             if lattice is not None:
                 raise Exception("lattice and boundary both specified")
-            #nn = []
-            #for i in range(L):
-            #    nn.append(self._get_nn(i, L, boundary))
             nn = _get_nn_1d(L, boundary)
         # lattice is specified explicitly
         else:
             nn = lattice
         HubbardBase.__init__(self, L, t, U, nn)
-
-    #def _get_nn(self, i, L, boundary):
-    #    if boundary == "p" or boundary == "pbc":
-    #        l = L - 1 if i == 0 else i - 1
-    #        r = 0 if i == (L - 1) else i + 1
-    #        return (l, r)
-    #    else:
-    #        if i == 0:
-    #            return (i + 1,)
-    #        elif i == (L - 1):
-    #            return(i - 1,)
-    #        else:
-    #            l = i - 1
-    #            r = i + 1
-    #            return (l, r)
 
 
 class Hubbard2D(HubbardBase):
