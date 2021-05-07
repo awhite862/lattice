@@ -2,6 +2,7 @@ import logging
 import sys
 from lattice.tests.test_test import *
 from lattice.tests.test_anderson import *
+from lattice.tests.test_hubbard import *
 from lattice.tests.test_fci_simple import *
 
 logging.basicConfig(

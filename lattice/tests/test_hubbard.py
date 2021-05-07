@@ -5,7 +5,7 @@ from lattice.hubbard import Hubbard1D, Hubbard2D, Hubbard3D
 
 class HubbardTest(unittest.TestCase):
     def testT1D(self):
-        # 2 sites, open boudnary
+        # 2 sites, open boundary
         hub = Hubbard1D(2, 1.0, 0.0, boundary='o')
         tref = numpy.zeros((2, 2))
         tref[0, 1] = -1
@@ -104,6 +104,49 @@ class HubbardTest(unittest.TestCase):
         tout = hub.get_tmatS()
         diff = numpy.linalg.norm(tout - tref)
         self.assertTrue(diff < 1e-14)
+
+    def testUNorm(self):
+        # 2 sites, open boundary
+        L = 2
+        hub = Hubbard1D(L, 1.0, 1.0, boundary='o')
+        nout1 = numpy.sum(hub.get_umatS())
+        nout2 = numpy.sum(hub.get_umat()) / 4
+        d1 = abs(nout1 - L)
+        d2 = abs(nout2 - L)
+        self.assertTrue(d1 < 1e-14)
+        self.assertTrue(d2 < 1e-14)
+
+        # 2 sites, periodic boundary
+        L = 2
+        hub = Hubbard1D(L, 1.0, 1.0, boundary='p')
+        nout1 = numpy.sum(hub.get_umatS())
+        nout2 = numpy.sum(hub.get_umat()) / 4
+        d1 = abs(nout1 - L)
+        d2 = abs(nout2 - L)
+        self.assertTrue(d1 < 1e-14)
+        self.assertTrue(d2 < 1e-14)
+
+        # 4 sites, periodic boundary
+        L = 4
+        hub = Hubbard1D(L, 1.0, 1.0, boundary='p')
+        nout1 = numpy.sum(hub.get_umatS())
+        nout2 = numpy.sum(hub.get_umat()) / 4
+        d1 = abs(nout1 - L)
+        d2 = abs(nout2 - L)
+        self.assertTrue(d1 < 1e-14)
+        self.assertTrue(d2 < 1e-14)
+
+        # 8 sites, 3D, open boundary
+        L = 8
+        nn = [(1, 2, 4), (0, 3, 5), (0, 6, 3), (1, 2, 7),
+              (0, 6, 5), (4, 7, 1), (2, 4, 7), (3, 5, 6)]
+        hub = Hubbard3D(8, 1.0, 1.0, nn)
+        nout1 = numpy.sum(hub.get_umatS())
+        nout2 = numpy.sum(hub.get_umat()) / 4
+        d1 = abs(nout1 - L)
+        d2 = abs(nout2 - L)
+        self.assertTrue(d1 < 1e-14)
+        self.assertTrue(d2 < 1e-14)
 
 
 if __name__ == '__main__':
