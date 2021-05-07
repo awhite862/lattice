@@ -54,7 +54,7 @@ class HubbardBase(object):
         N = self.N
         umat = numpy.zeros((N, N, N, N))
         for i in range(N):
-            umat[i, i, i, i] = 4.0*self.u
+            umat[i, i, i, i] = self.U
         return umat
 
     def get_umat(self):
@@ -62,10 +62,10 @@ class HubbardBase(object):
         N = self.N
         umat = numpy.zeros((2*N, 2*N, 2*N, 2*N))
         for i in range(N):
-            umat[i, N + i, i, N + i] = 4.0*self.u
-            umat[N + i, i, N + i, i] = 4.0*self.u
-            umat[i, i, i, i] = 4.0*self.u
-            umat[N + i, N + i, N + i, N + i] = 4.0*self.u
+            umat[i, N + i, i, N + i] = self.U
+            umat[N + i, i, N + i, i] = self.U
+            umat[i, i, i, i] = self.U
+            umat[N + i, N + i, N + i, N + i] = self.U
         return umat
 
 

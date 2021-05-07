@@ -16,10 +16,12 @@ def run_suite():
     suite.addTest(test_hubbard.HubbardTest("testT1D"))
     suite.addTest(test_hubbard.HubbardTest("testT2D"))
     suite.addTest(test_hubbard.HubbardTest("testT3D"))
+    suite.addTest(test_hubbard.HubbardTest("testUNorm"))
 
     suite.addTest(test_test.TestTest("test_framework"))
 
     suite.addTest(test_fci_simple.TestFCISimple("test_1d_hubbard"))
+    suite.addTest(test_fci_simple.TestFCISimple("test_basis_2site"))
 
     return suite
 

@@ -1,7 +1,6 @@
 import numpy
 import itertools
 import logging
-from math import factorial
 
 
 #def binom(a, b):
@@ -51,7 +50,7 @@ class FCISimple(object):
         k, nelec = self.basis.shape
         assert(k == self.k)
         assert(nelec == self.nelec)
-        out = str() 
+        out = str()
         for i in range(k):
             sss = "|"
             for j in range(nelec):
@@ -61,8 +60,6 @@ class FCISimple(object):
 
             sss = sss + ">" + " m_s = " + str(self._get_m_s(self.basis[i])) + "\n"
             out += sss
-            #print(sss)
-        #print("")
         return out
 
     def _get_matrixel(self, istate, jstate, U, T):
