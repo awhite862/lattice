@@ -4,16 +4,16 @@ import logging
 from math import factorial
 
 
-def binom(a, b):
-    """ Return binomial coefficient 'a choose b'"""
-    if a < 0 or b < 0:
-        return None
-    elif a < b:
-        return 0
-    elif a == b:
-        return 1
-    else:
-        return factorial(a) // factorial(b) // factorial(a - b)
+#def binom(a, b):
+#    """ Return binomial coefficient 'a choose b'"""
+#    if a < 0 or b < 0:
+#        return None
+#    elif a < b:
+#        return 0
+#    elif a == b:
+#        return 1
+#    else:
+#        return factorial(a) // factorial(b) // factorial(a - b)
 
 
 class FCISimple(object):
@@ -51,6 +51,7 @@ class FCISimple(object):
         k, nelec = self.basis.shape
         assert(k == self.k)
         assert(nelec == self.nelec)
+        out = str() 
         for i in range(k):
             sss = "|"
             for j in range(nelec):
@@ -58,9 +59,11 @@ class FCISimple(object):
                 if j < nelec - 1:
                     sss = sss + " "
 
-            sss = sss + ">" + " m_s = " + str(self._get_m_s(self.basis[i]))
-            print(sss)
-        print("")
+            sss = sss + ">" + " m_s = " + str(self._get_m_s(self.basis[i])) + "\n"
+            out += sss
+            #print(sss)
+        #print("")
+        return out
 
     def _get_matrixel(self, istate, jstate, U, T):
         iset = set(istate)

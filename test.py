@@ -8,3 +8,6 @@ logging.basicConfig(
     format='%(levelname)s:%(message)s',
     level=logging.ERROR,
     stream=sys.stdout)
+
+if __name__ == '__main__':
+    unittest.main()

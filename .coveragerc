@@ -1,0 +1,9 @@
+[run]
+branch = True
+source = lattice
+omit = lattice/tests/*.py
+
+[report]
+exclude_lines = 
+    return NotImplemented
+    assert
