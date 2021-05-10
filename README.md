@@ -1,6 +1,8 @@
 # Lattice
 A python interface for some lattice models
 
+[![Tests](https://github.com/awhite862/lattice/workflows/Tests/badge.svg)](https://github.com/awhite862/lattice/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/awhite862/lattice/branch/master/graph/badge.svg)](https://codecov.io/gh/awhite862/lattice)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://mit-license.org)
 
 ## Features
