@@ -1,5 +1,5 @@
 import numpy
-from cqcpy import utils
+from . import utils
 
 
 class HubbardBase(object):
