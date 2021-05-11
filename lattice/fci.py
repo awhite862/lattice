@@ -29,14 +29,14 @@ class FCISimple(object):
         combs = list(itertools.combinations(seed, nelec))
         if self.m_s is None:
             self.basis = numpy.asarray(combs)
-            self.k, norb = self.basis.shape
+            self.k = self.basis.shape[0]
         else:
             new = []
             for state in combs:
                 if self._get_m_s(state) == self.m_s:
                     new.append(state)
             self.basis = numpy.asarray(new)
-            self.k, norb = self.basis.shape
+            self.k = self.basis.shape[0]
 
     def _get_m_s(self, state):
         N = self.model.N
