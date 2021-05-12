@@ -3,6 +3,8 @@ A python interface for some lattice models
 
 [![Tests](https://github.com/awhite862/lattice/workflows/Tests/badge.svg)](https://github.com/awhite862/lattice/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/awhite862/lattice/branch/master/graph/badge.svg)](https://codecov.io/gh/awhite862/lattice)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/awhite862/lattice.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/awhite862/lattice/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/awhite862/lattice.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/awhite862/lattice/context:python)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://mit-license.org)
 
 ## Features
